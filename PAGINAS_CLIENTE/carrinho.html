@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>carrinho</title>
+   <!--Bootstrap CSS via CDN-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  
+    <link rel="stylesheet" href="../css/style.css" />
+  
+    </head>
+  </head>
+  <body class="bg-light">
+
+
+  <!-- =================== MENU SUPERIOR =================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
+    <!-- Marca/Logo -->
+    <a class="navbar-brand" href="index.html">
+      <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu">
+    </a>
+
+    <!-- Botão responsivo -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links do menu -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="carrinho.html">Carrinho</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Inicio do Container Carrinho ----------------------------------------->
+  <div class="container my-4">
+
+    <!-- Título -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold">Meu carrinho</h4>
+      <span class="text-muted">Sumário</span>
+    </div>
+
+    <!-- Lista de Itens do Carrinho -->
+    <div class="list-group" id="lista-carrinho">
+
+      <!-- Produto 1 -->
+      <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <input class="form-check-input me-2" type="checkbox">
+
+        <img src="../IMG/esp.carne.png" alt="Espetinho" class="img-fluid cart-img">
+
+        <div class="flex-grow-1">
+          <p class="mb-1 fw-semibold">Espetinho de frango</p>
+          <div class="d-flex align-items-center gap-2">
+            <label class="form-label mb-0">Qtd:</label>
+            <input type="number" class="form-control form-control-sm w-25 quantidade" value="4" min="1">
+          </div>
+          <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-outline-danger btn-sm remover-item"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+
+      <!-- Produto 2 -->
+      <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <input class="form-check-input me-2" type="checkbox">
+
+        <img src="../IMG/esp.coracao.png" alt="Espetinho" class="img-fluid cart-img">
+
+        <div class="flex-grow-1">
+          <p class="mb-1 fw-semibold">Espetinho de boi c/ mandioca</p>
+          <div class="d-flex align-items-center gap-2">
+            <label class="form-label mb-0">Qtd:</label>
+            <input type="number" class="form-control form-control-sm w-25 quantidade" value="2" min="1">
+          </div>
+          <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-outline-danger btn-sm remover-item"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+
+    </div>
+    <!-- Fim da Lista de Itens ----------------------------------------->
+
+    <!-- Resumo -->
+    <div id="resumo" class="d-flex justify-content-between align-items-center mt-4 p-3 bg-white shadow-sm rounded">
+      <small>Quantidade de Itens: <strong id="totalItens">0</strong></small>
+      <small>Subtotal: <strong>R$ <span id="subtotal">0.00</span></strong></small>
+      <small>Total: <strong>R$ <span id="total">0.00</span></strong></small>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
+      <button id="removerSelecionados" class="btn btn-danger flex-grow-1">Remover Itens Selecionados</button>
+      <button class="btn btn-success flex-grow-1">Gerar Compra</button>
+    </div>
+
+  </div>
+  <!-- Fim do Container Carrinho ----------------------------------------->
+
+  <!-- Inicio do Rodapé ----------------------------------------->
+  <footer class="bg-custom text-white text-center py-3 mt-4">
+    <p class="mb-0">&copy; 2025 JR Espetos - Todos os direitos reservados</p>
+  </footer>
+  <!-- Fim do Rodapé ----------------------------------------->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Inicio do Script de Cálculo do Carrinho --------------------
+    function atualizarCarrinho() {
+      let totalItens = 0;
+      let subtotal = 0;
+
+      document.querySelectorAll(".list-group-item").forEach(item => {
+        const qtdInput = item.querySelector(".quantidade");
+        const precoSpan = item.querySelector(".preco");
+
+        if (qtdInput && precoSpan) {
+          const qtd = parseInt(qtdInput.value) || 0;
+          const preco = parseFloat(precoSpan.textContent) || 0;
+
+          totalItens += qtd;
+          subtotal += qtd * preco;
+        }
+      });
+
+      document.getElementById("totalItens").textContent = totalItens;
+      document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+      document.getElementById("total").textContent = subtotal.toFixed(2);
+    }
+
+    // Atualiza ao alterar quantidade
+    document.querySelectorAll(".quantidade").forEach(input => {
+      input.addEventListener("change", atualizarCarrinho);
+    });
+
+    // Botão remover item individual
+    document.querySelectorAll(".remover-item").forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.closest(".list-group-item").remove();
+        atualizarCarrinho();
+      });
+    });
+
+    // Botão remover selecionados
+    document.getElementById("removerSelecionados").addEventListener("click", function () {
+      document.querySelectorAll(".list-group-item").forEach(item => {
+        if (item.querySelector(".form-check-input").checked) {
+          item.remove();
+        }
+      });
+      atualizarCarrinho();
+    });
+
+    // Calcula no carregamento inicial
+    atualizarCarrinho();
+    // Fim do Script de Cálculo do Carrinho --------------------
+  </script>
+</body>
+</html>

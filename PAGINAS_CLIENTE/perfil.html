@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  </head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- =================== MENU SUPERIOR =================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
+    <!-- Marca/Logo -->
+    <a class="navbar-brand" href="index.html">
+      <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu">
+    </a>
+
+    <!-- Botão responsivo -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links do menu -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="carrinho.html">Carrinho</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Conteúdo principal -->
+  <main class="container my-4 flex-grow-1">
+    <div class="card shadow-sm p-4">
+
+      <!-- Avatar -->
+      <div class="text-center mb-4">
+        <div class="position-relative d-inline-block">
+          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuário" class="avatar-img rounded-circle">
+          <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 rounded-circle">
+            <i class="bi bi-plus-lg"></i>
+          </button>
+        </div>
+        <p class="mt-2 mb-0 fw-semibold">Usuário</p>
+      </div>
+
+      <!-- Formulário de perfil -->
+      <form>
+        <!-- Nome -->
+        <div class="mb-3">
+          <label for="nome" class="form-label fw-bold">Nome:</label>
+          <input type="text" id="nome" class="form-control" value="João da Silva">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">E-mail:</label>
+          <input type="email" id="email" class="form-control" value="joao@email.com">
+        </div>
+
+        <!-- Senha com botão ver senha -->
+        <div class="mb-3">
+          <label for="senha" class="form-label fw-bold">Senha:</label>
+          <div class="input-group">
+            <input type="password" id="senha" class="form-control" value="12345678" disabled>
+            <button class="btn btn-outline-secondary" type="button" id="toggleSenha">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+          <a href="#" class="mudar-senha">Mudar senha</a>
+        </div>
+
+        <!-- Botões de opções -->
+        <div class="d-grid gap-2 mt-4">
+          <button type="button" class="btn btn-option">Dados para cadastro de frete</button>
+          <button type="button" class="btn btn-option">Meus pedidos</button>
+          <button type="button" class="btn btn-option">Meus endereços</button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="footer bg-custom text-white text-center py-2 mt-auto">
+    <small>&copy; 2025 JR Espetos - Todos os direitos reservados</small>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Botão para mostrar/ocultar senha
+    const toggleSenha = document.getElementById("toggleSenha");
+    const senhaInput = document.getElementById("senha");
+
+    toggleSenha.addEventListener("click", () => {
+      if (senhaInput.type === "password") {
+        senhaInput.type = "text";
+        toggleSenha.innerHTML = '<i class="bi bi-eye-slash"></i>';
+      } else {
+        senhaInput.type = "password";
+        toggleSenha.innerHTML = '<i class="bi bi-eye"></i>';
+      }
+    });
+  </script>
+</body>
+</html>

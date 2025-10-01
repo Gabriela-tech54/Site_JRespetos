@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>home lojista</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  </head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- =================== MENU SUPERIOR =================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
+    <!-- Logo JR -->
+    <a class="navbar-brand" href="index.html">
+      <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu">
+    </a>
+
+    <!-- Botão responsivo -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Link lateral -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-danger-emphasis" href="frete.html">Cadastro de frete</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- =================== CONTEÚDO PRINCIPAL =================== -->
+  <main class="container text-center my-4 flex-grow-1">
+
+    <!-- Logo grande -->
+    <div class="mb-3">
+      <img src="../IMG/logo.mr.png" alt="Logo JR" class="logo-principal">
+    </div>
+
+    <!-- Mensagem de boas-vindas -->
+    <h5 class="fw-semibold">Olá,</h5>
+    <p class="mb-4">O que você gostaria de fazer?</p>
+
+    <!-- =================== GRID DE OPÇÕES =================== -->
+<div class="container my-4">
+  <div class="row justify-content-center g-4">
+
+    <!-- Primeira linha -->
+    <div class="col-6 col-md-4">
+      <div class="option-card p-4 h-100">
+        <i class="bi bi-plus-circle fs-1"></i>
+        <h6 class="mt-2">Adicionar Produto</h6>
+        <small>Cadastrar produtos novos</small>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+      <div class="option-card p-4 h-100">
+        <i class="bi bi-image fs-1"></i>
+        <h6 class="mt-2">Adicionar Banner</h6>
+        <small>Criar banners para divulgação</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center g-4 mt-1">
+    <!-- Segunda linha -->
+    <div class="col-6 col-md-4">
+      <div class="option-card p-4 h-100">
+        <i class="bi bi-clipboard fs-1"></i>
+        <h6 class="mt-2">Pedidos</h6>
+        <small>Gerenciar pedidos</small>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+      <div class="option-card p-4 h-100">
+        <i class="bi bi-headset fs-1"></i>
+        <h6 class="mt-2">Suporte</h6>
+        <small>Suporte e ajuda</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Botão Ver Produtos -->
+    <div class="mt-5">
+      <a href="produtos.html" class="btn btn-danger px-4">Ver os Produtos</a>
+    </div>
+
+  </main>
+
+  <!-- =================== RODAPÉ =================== -->
+  <footer class="footer bg-custom text-white text-center py-2 mt-auto">
+    <small>&copy; 2025 JR Espetos - Todos os direitos reservados</small>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ 
+    
+    <!-- ================= STATUS LOJA ================= -->
+   <section class="bg-custom text-white text-end px-3 py-2">
+  <div class="form-check form-switch d-inline-flex align-items-center">
+    <input class="form-check-input switch-loja" type="checkbox" id="statusLoja" checked>
+    <label class="form-check-label ms-2 fw-bold text-success" for="statusLoja">
+      Aberto
+    </label>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const statusLoja = document.getElementById('statusLoja');
+    const labelStatus = document.querySelector('label[for="statusLoja"]');
+
+    // Carrega status salvo (se existir)
+    const status = localStorage.getItem('statusLoja');
+    if (status === 'fechado') {
+      statusLoja.checked = false;
+      labelStatus.textContent = 'Fechado';
+      labelStatus.classList.remove('text-success');
+      labelStatus.classList.add('text-danger');
+    }
+
+    // Atualiza o texto ao clicar e salva no localStorage
+    statusLoja.addEventListener('change', () => {
+      if (statusLoja.checked) {
+        labelStatus.textContent = 'Aberto';
+        labelStatus.classList.remove('text-danger');
+        labelStatus.classList.add('text-success');
+        localStorage.setItem('statusLoja', 'aberto');
+      } else {
+        labelStatus.textContent = 'Fechado';
+        labelStatus.classList.remove('text-success');
+        labelStatus.classList.add('text-danger');
+        localStorage.setItem('statusLoja', 'fechado');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

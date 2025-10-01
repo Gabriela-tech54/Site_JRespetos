@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+ 
+ <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  </head>
+  <body class="bg-light">
+
+  <!-- Inicio do Menu Superior ----------------------------------------->
+  <nav class="navbar navbar-dark bg-custom px-3">
+    <!-- Botão Voltar -->
+    <a href="login.html" class="btn btn-outline-light me-2">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+
+    <!-- Logo Centralizada -->
+    <span class="navbar-brand mx-auto">
+      <img src="../IMG/logotr.png" alt="Logo" class="logo-menu">
+    </span>
+  </nav>
+  <!-- Fim do Menu Superior ----------------------------------------->
+
+  <!-- Inicio do Container de Cadastro ----------------------------------------->
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg p-4 w-100 cadastro-card">
+
+      <!-- Inicio do Formulário de Cadastro ----------------------------------------->
+      <form action="../php/cadastrocliente.php" method="post" id="formCadastro">
+
+        <!-- Campo Nome -->
+        <div class="mb-3">
+          <label for="nome" class="form-label fw-bold">Nome completo:</label>
+          <input type="text" class="form-control" id="nome"  name="nome" required>
+        </div>
+
+        <!-- Campo CPF -->
+        <div class="mb-3">
+          <label for="cpf" class="form-label fw-bold">CPF:</label>
+          <input type="text" class="form-control" id="cpf" maxlength="14" name="cpf" required>
+        </div>
+
+        <!-- Campo Telefone -->
+        <div class="mb-3">
+          <label for="telefone" class="form-label fw-bold">Telefone:</label>
+          <input type="text" class="form-control" id="telefone" maxlength="15" name="telefone" required>
+        </div>
+
+        <!-- Campo E-mail -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">E-mail:</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <!-- Campo Senha -->
+        <div class="mb-3 position-relative">
+          <label for="senha" class="form-label fw-bold">Senha:</label>
+          <input type="password" class="form-control" id="senha" name="senha" required>
+          <button type="button" class="btn btn-sm btn-outline-secondary toggle-password" data-target="#senha">Mostrar</button>
+        </div>
+
+        <!-- Campo Confirmar Senha -->
+        <div class="mb-3 position-relative">
+          <label for="confirmaSenha" class="form-label fw-bold">Confirmar senha:</label>
+          <input type="password" class="form-control" id="confirmaSenha" name="confirmar" required>
+          <button type="button" class="btn btn-sm btn-outline-secondary toggle-password" data-target="#confirmaSenha">Mostrar</button>
+        </div>
+
+        <!-- Botão Cadastrar -->
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+
+      </form>
+      <!-- Fim do Formulário de Cadastro ----------------------------------------->
+
+    </div>
+  </div>
+  <!-- Fim do Container de Cadastro ----------------------------------------->
+
+  <!-- Scripts Bootstrap e Funções -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.js"></script>
+  <script>
+    // Máscaras CPF
+    const cpfInput = document.getElementById('cpf');
+    cpfInput.addEventListener('input', () => {
+      let value = cpfInput.value.replace(/\D/g, "");
+      if (value.length > 3) value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      if (value.length > 6) value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      if (value.length > 9) value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      cpfInput.value = value;
+    });
+
+    // Máscara Telefone
+    const telefoneInput = document.getElementById('telefone');
+    telefoneInput.addEventListener('input', () => {
+      let value = telefoneInput.value.replace(/\D/g, "");
+      if (value.length > 2) value = value.replace(/(\d{2})(\d)/, "($1) $2");
+      if (value.length > 7) value = value.replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+      telefoneInput.value = value;
+    });
+
+    // Mostrar/Ocultar senha
+    document.querySelectorAll(".toggle-password").forEach(button => {
+      button.addEventListener("click", () => {
+        const input = document.querySelector(button.getAttribute("data-target"));
+        if (input.type === "password") {
+          input.type = "text";
+          button.textContent = "Ocultar";
+        } else {
+          input.type = "password";
+          button.textContent = "Mostrar";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

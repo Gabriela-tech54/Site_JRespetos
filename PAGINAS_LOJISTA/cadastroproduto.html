@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cadastro produto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  </head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- Inicio do Menu Superior ----------------------------------------->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
+    <a class="navbar-brand" href="index.html">
+      <img src="../IMG/logo.mr.png" alt="Logo JR Espetos" class="logo-menu">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link" href="carrinho.html">Carrinho</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Fim do Menu Superior ----------------------------->
+
+  <!-- Container principal -->
+  <main class="container my-5 flex-grow-1">
+    <div class="card shadow p-4">
+
+      <!-- Título da Página -->
+      <h2 class="text-center fw-bold mb-4">Adicionar Novo Produto</h2>
+
+      <!-- Formulário de cadastro de produto -->
+      <form id="formProduto">
+
+        <!-- Nome do produto -->
+        <div class="mb-3">
+          <label for="nomeProduto" class="form-label fw-bold">Nome do produto:</label>
+          <input type="text" id="nomeProduto" class="form-control" placeholder="Digite o nome do produto" required>
+        </div>
+
+        <!-- Descrição -->
+        <div class="mb-3">
+          <label for="descricao" class="form-label fw-bold">Descrição:</label>
+          <textarea id="descricao" class="form-control" rows="4" placeholder="Digite a descrição do produto"></textarea>
+        </div>
+
+        <!-- Categoria e Preço -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="categoria" class="form-label fw-bold">Categoria:</label>
+            <select id="categoria" class="form-select" required>
+              <option value="">Selecione...</option>
+              <option value="Carnes">Carnes</option>
+              <option value="Bebidas">Bebidas</option>
+              <option value="Sobremesas">Sobremesas</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="preco" class="form-label fw-bold">Preço:</label>
+            <div class="input-group">
+              <span class="input-group-text">R$</span>
+              <input type="number" id="preco" class="form-control" step="0.01" placeholder="0,00" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantidade e Imagem -->
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <label for="quantidade" class="form-label fw-bold">Quantidade:</label>
+            <input type="number" id="quantidade" class="form-control" min="1" value="1" required>
+          </div>
+          <div class="col-md-6">
+            <label for="imagem" class="form-label fw-bold">Imagem do produto:</label>
+            <input type="file" id="imagem" class="form-control">
+          </div>
+        </div>
+
+        <!-- Status do Produto -->
+        <div class="mt-4">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="status" id="ativo" value="Ativo" checked>
+            <label class="form-check-label" for="ativo">Produto Ativo</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="status" id="naoAtivo" value="Não Ativo">
+            <label class="form-check-label" for="naoAtivo">Produto não Ativo</label>
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-danger">Salvar produto</button>
+          <a href="index.html" class="btn btn-secondary">Cancelar/voltar</a>
+        </div>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="footer bg-custom text-white text-center py-2 mt-auto">
+    <small>&copy; 2025 JR Espetos - Todos os direitos reservados</small>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script para funcionamento do formulário -->
+  <script>
+    document.getElementById("formProduto").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Produto salvo com sucesso!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
