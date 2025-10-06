@@ -135,10 +135,10 @@ if($inserirImagens) {
     redirecWith("../paginas_lojista/cadastroproduto.html",
     ["Erro"="Falha ao cadastrar Imagens"]);
 }
-// CASO TENHA DADO CERTO, CAPTURE O ID DA IMAGEM CADASTRADO
+
 $idImg = (int) $pdo->lastInsertId();
 
-// VINCULAR A IMAGEM COM O PRODUTO
+// VINCULAR IMAGEM COM O PRODUTO
 $sqlVincularProdImg = "INSERT INTO Produtos_e_Imagens_produtos
 (Produtos_idProdutos,Imagens_produtos_idImagens_produtos) VALUES
 (:idpro,idimg)";
@@ -149,6 +149,12 @@ $inserirVincularProdImg=$stmVincularProdImg->execute([
     ":idpro"=> $idproduto,
     ":idimg"=> $idImg,
 ]);
+
+if (!$inserirVincularProdImg) {
+    $pdo->rollBack();
+    redirecWith("../paginas_lojista/cadastroproduto.html",
+    ["erro" => "Falha ao vincular produto com imagem"]);
+}
 
 /* agora que tudo foi feito no Try, vamos elaborar 
     o catch com os possiveis erros */
