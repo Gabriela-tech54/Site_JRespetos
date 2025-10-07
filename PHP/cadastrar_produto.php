@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . "/conexao.php";
+require_once __DIR__ . "/conexao.php"; // conexão com o banco
 
+// Função para redirecionar com parâmetros
 function redirecWith($url, $params = []) {
     if (!empty($params)) {
         $qs = http_build_query($params);
@@ -11,6 +12,7 @@ function redirecWith($url, $params = []) {
     exit;
 }
 
+// Função para ler imagem como blob
 function readImageToBlob(?array $file): ?string {
     if (!$file || !isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) return null;
     $content = file_get_contents($file['tmp_name']);
@@ -22,41 +24,41 @@ try {
         redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Método inválido"]);
     }
 
-    // Captura dos dados do formulário
-    $nome = $_POST["nome"] ?? "";
-    $descricao = $_POST["descricao"] ?? "";
-    $quantidade = (int)($_POST["quantidade"] ?? 0);
-    $preco = (double)($_POST["preco"] ?? 0);
+    // Captura dados do formulário
+    $nome = $_POST["nome"] ?? '';
+    $descricao = $_POST["descricao"] ?? '';
+    $quantidade = (int)($_POST["quantidade"] ?? 1);
+    $preco = (float)($_POST["preco"] ?? 0);
     $tamanho = $_POST["tamanho"] ?? null;
     $cor = $_POST["cor"] ?? null;
     $codigo = (int)($_POST["codigo"] ?? 0);
-    $preco_promocional = (double)($_POST["preco_promocional"] ?? 0);
-    $categoria = (int)($_POST["categoria"] ?? 0);
+    $preco_promocional = (float)($_POST["preco_promocional"] ?? null);
+    $categoria_id = (int)($_POST["categoria"] ?? 0); // Categoria obrigatória
+    $status = ($_POST["status"] ?? 'Ativo') === 'Ativo' ? 1 : 0;
 
-    $imagem = readImageToBlob($_FILES["imagem"] ?? null);
+    // Captura imagem
+    $img = readImageToBlob($_FILES["imagem"] ?? null);
+    $img_descricao = "Principal";
 
-    // Validação simples
-    $erros_validacao = [];
-    if ($nome === "" || $descricao === "" || $quantidade <= 0 || $preco <= 0 || $categoria === 0) {
-        $erros_validacao[] = "Preencha todos os campos obrigatórios.";
+    // Validação básica
+    $erros = [];
+    if ($nome === "" || $descricao === "" || $quantidade <= 0 || $preco <= 0) {
+        $erros[] = "Preencha todos os campos obrigatórios corretamente.";
+    }
+    if (!empty($erros)) {
+        redirecWith("../paginas_lojista/cadastroproduto.html", ["erro_produto" => implode(",", $erros)]);
     }
 
-    if (!empty($erros_validacao)) {
-        redirecWith("../paginas_lojista/cadastroproduto.html", ["erro_produto" => implode(",", $erros_validacao)]);
-    }
-
+    // Inicia transação
     $pdo->beginTransaction();
 
-    // INSERT PRODUTO
-    $sqlProduto = "INSERT INTO Produtos (
-        nome, descricao, quantidade, preco, tamanho, cor, codigo, preco_promocional, Categorias_produtos_idCategorias_produtos
-    ) VALUES (
-        :nome, :descricao, :quantidade, :preco, :tamanho, :cor, :codigo, :preco_promocional, :categoria
-    )";
-
-    $stmProduto = $pdo->prepare($sqlProduto);
-
-    $inserirProduto = $stmProduto->execute([
+    // Inserir produto
+    $sqlProduto = "INSERT INTO Produtos 
+        (nome, descricao, quantidade, preco, tamanho, cor, codigo, preco_promocional, Categorias_produtos_idCategorias_produtos) 
+        VALUES 
+        (:nome, :descricao, :quantidade, :preco, :tamanho, :cor, :codigo, :preco_promocional, :categoria_id)";
+    $stmtProduto = $pdo->prepare($sqlProduto);
+    $stmtProduto->execute([
         ":nome" => $nome,
         ":descricao" => $descricao,
         ":quantidade" => $quantidade,
@@ -65,47 +67,40 @@ try {
         ":cor" => $cor,
         ":codigo" => $codigo,
         ":preco_promocional" => $preco_promocional,
-        ":categoria" => $categoria
+        ":categoria_id" => $categoria_id
     ]);
-
-    if (!$inserirProduto) {
-        $pdo->rollBack();
-        redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Falha ao cadastrar produto."]);
-    }
 
     $idProduto = (int)$pdo->lastInsertId();
 
-    // INSERIR IMAGEM (se existir)
-    if ($imagem !== null) {
-        $sqlImagem = "INSERT INTO Imagens_produtos (foto) VALUES (:imagem)";
-        $stmImagem = $pdo->prepare($sqlImagem);
-        $stmImagem->bindParam(':imagem', $imagem, PDO::PARAM_LOB);
-        $inserirImagem = $stmImagem->execute();
-
-        if (!$inserirImagem) {
-            $pdo->rollBack();
-            redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Falha ao cadastrar imagem."]);
-        }
+    // Inserir imagem se existir
+    if ($img !== null) {
+        $sqlImagem = "INSERT INTO Imagens_produtos (foto, descricao) VALUES (:foto, :descricao)";
+        $stmtImagem = $pdo->prepare($sqlImagem);
+        $stmtImagem->bindParam(':foto', $img, PDO::PARAM_LOB);
+        $stmtImagem->bindParam(':descricao', $img_descricao);
+        $stmtImagem->execute();
 
         $idImg = (int)$pdo->lastInsertId();
 
-        // Vincular produto com imagem (se a tabela existir)
-        $sqlVinculo = "INSERT INTO Produtos_e_Imagens_produtos (Produtos_idProdutos, Imagens_produtos_idImagens_produtos)
-                       VALUES (:idpro, :idimg)";
-        $stmVinculo = $pdo->prepare($sqlVinculo);
-        $vinculado = $stmVinculo->execute([":idpro" => $idProduto, ":idimg" => $idImg]);
-
-        if (!$vinculado) {
-            $pdo->rollBack();
-            redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Falha ao vincular produto e imagem."]);
-        }
+        // Vincular produto à imagem
+        $sqlVinculo = "INSERT INTO Produtos_e_Imagens_produtos 
+            (Produtos_idProdutos, Produtos_Categorias_produtos_idCategorias_produtos, Imagens_produtos_idImagens_produtos) 
+            VALUES (:idProduto, :categoria_id, :idImg)";
+        $stmtVinculo = $pdo->prepare($sqlVinculo);
+        $stmtVinculo->execute([
+            ":idProduto" => $idProduto,
+            ":categoria_id" => $categoria_id,
+            ":idImg" => $idImg
+        ]);
     }
 
     $pdo->commit();
-    redirecWith("../paginas_lojista/cadastroproduto.html", ["sucesso" => "Produto cadastrado com sucesso!"]);
+    redirecWith("../paginas_lojista/cadastroproduto.html", ["sucesso" => 1]);
 
 } catch (Exception $e) {
-    if ($pdo->inTransaction()) $pdo->rollBack();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Erro no banco de dados: " . $e->getMessage()]);
 }
 ?>
