@@ -46,4 +46,5 @@ try {
 } catch (Exception $e) {
     redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro" => "Erro no banco: " . $e->getMessage()]);
 }
+
 ?>

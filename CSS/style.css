@@ -423,6 +423,59 @@ body {
   bottom: 0;
   width: 100%;
 }
+/* ======== Aparência de caixa flutuante menor (balão) ======== */
+section[aria-labelledby="titulo-lista-produtos"] {
+  background: rgba(255, 255, 255, 0.85); /* branco translúcido */
+  border-radius: 14px; /* cantos levemente arredondados */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12); /* sombra mais leve */
+  padding: 14px 18px; /* menos espaço interno */
+  backdrop-filter: blur(5px); /* vidro fosco */
+  margin-top: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito de leve flutuação */
+section[aria-labelledby="titulo-lista-produtos"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* ======== Tabela de produtos ======== */
+.produtos-tabela th,
+.produtos-tabela td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Permitir quebra apenas em Nome e Categorias */
+.produtos-tabela td:nth-child(3), /* Nome */
+.produtos-tabela td:nth-child(5)  /* Categorias */ {
+  white-space: normal;
+}
+
+/* Aparência geral da tabela */
+.produtos-tabela {
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem; /* texto ligeiramente menor */
+}
+
+/* Cabeçalho da tabela */
+.produtos-tabela thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  padding: 8px 10px;
+}
+
+/* Efeito hover nas linhas */
+.produtos-tabela tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.08);
+  transition: 0.2s ease-in-out;
+}
+
+
 
 /* Responsividade */
 @media (max-width: 768px) {
