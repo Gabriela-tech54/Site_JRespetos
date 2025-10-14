@@ -159,22 +159,22 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])){
 try {
 /* CADASTRAR */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  redirect_with('../PAGINAS_LOGISTA/cadastro_produtos_logista.html', [
+  redirect_with('../PAGINAS_LOGISTA/cadastro_produto.html', [
     'erro_marca' => 'Método inválido'
   ]);
 }
 
 
-  $nome = trim($_POST['nomemarca'] ?? '');
-  $imgBlob = read_image_to_blob($_FILES['imagemmarca'] ?? null);
+  $nome = trim($_POST['nomeproduto'] ?? '');
+  $imgBlob = read_image_to_blob($_FILES['imagemproduto'] ?? null);
 
   if ($nome === '') {
-    redirect_with('../PAGINAS_LOGISTA/cadastro_produtos_logista.html', [
-      'erro_marca' => 'Preencha o nome da marca.'
+    redirect_with('../PAGINAS_LOGISTA/cadastro_produto.html', [
+      'erro_marca' => 'Preencha o nome do produto.'
     ]);
   }
 
-  $sql = "INSERT INTO Marcas (nome, imagem) VALUES (:n, :i)";
+  $sql = "INSERT INTO Produtos (nome, descricao, quantidade, preco, tamanho, cor, codigo, preco_promocional) VALUES (:n, :i)";
   $st  = $pdo->prepare($sql);
   $st->bindValue(':n', $nome, PDO::PARAM_STR);
   if ($imgBlob === null) $st->bindValue(':i', null, PDO::PARAM_NULL);

@@ -1,50 +1,70 @@
 <?php
-require_once __DIR__ . "/conexao.php";
+// Conectando este arquivo ao banco de dados
+require_once __DIR__ ."/conexao.php";
 
-// Função de redirecionamento
-function redirecWith($url, $params = [])
-{
-    if (!empty($params)) {
-        $qs = http_build_query($params);
-        $sep = (strpos($url, '?') === false) ? '?' : '&';
-        $url .= $sep . $qs;
-    }
-    header("Location: $url");
-    exit;
+// função para capturar os dados passados de uma página a outra
+function redirecWith($url,$params=[]){
+// verifica se os os paramentros não vieram vazios
+ if(!empty($params)){
+// separar os parametros em espaços diferentes
+$qs= http_build_query($params);
+$sep = (strpos($url,'?') === false) ? '?': '&';
+$url .= $sep . $qs;
+}
+// joga a url para o cabeçalho no navegador
+header("Location:  $url");
+// fecha o script
+exit;
 }
 
-try {
-    // Verifica se veio por POST
-    if ($_SERVER['REQUEST_METHOD'] !== "POST") {
-        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro" => "Método inválido"]);
+try{
+// SE O METODO DE ENVIO FOR DIFERENTE DO POST
+    if($_SERVER["REQUEST_METHOD"] !== "POST"){
+        //VOLTAR À TELA DE CADASTRO E EXIBIR ERRO
+        redirecWith("../paginas_lojista/fretepagamentolojista.html",
+           ["erro"=> "Metodo inválido"]);
     }
+// variaveis para receber os dados da tela
+    $nomepagamento = $_POST["nomepagamento"];
 
-    // Recebe os dados
-    $nomepagamento = trim($_POST["pagamento"] ?? "");
+// validação
+    $erros_validacao=[];
+    //se qualquer campo for vazio
+    if($nomepagamento === ""){
+        $erros_validacao[]="Preencha o campo";
+    }    
 
-    // Validação
-    if ($nomepagamento === "") {
-        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro" => "Preencha o campo de nome"]);
-    }
+/* Inserir o frete no banco de dados */
+    $sql ="INSERT INTO Formas_pagamento (nome)
+     Values (:nomepagamento)";
+     // executando o comando no banco de dados
+     $inserir = $pdo->prepare($sql)->execute([
+        ":nomepagamento" => $nomepagamento,
+             
+     ]);
 
-    // Inserir no banco
-    $sql = "INSERT INTO Formas_pagamento (nome) VALUES (:nomepagamento)";
-    $stmt = $pdo->prepare($sql);
-    $inserir = $stmt->execute([":nomepagamento" => $nomepagamento]);
-
-    // Verificação
-    if ($inserir) {
-        redirecWith("../paginas/fretepagamentolojista.html", ["cadastro" => "ok"]);
-    } else {
-        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro" => "Erro ao cadastrar no banco de dados"]);
-    }/* Verificando se foi cadastrado no banco de dados */
+     /* Verificando se foi cadastrado no banco de dados */
      if($inserir){
         redirecWith("../paginas_lojista/fretepagamentolojista.html",
         ["cadastro" => "ok"]) ;
+     }else{
+        redirecWith("../paginas_lojista/fretepagamentolojista.html"
+        ,["erro" =>"Erro ao cadastrar no banco
+         de dados"]);
      }
 
-} catch (Exception $e) {
-    redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro" => "Erro no banco: " . $e->getMessage()]);
+
+
+
+
+}catch(Exception $e){
+redirecWith("../paginas_lojista/fretepagamentolojista.html",
+      ["erro" => "Erro no banco de dados: "
+      .$e->getMessage()]);
 }
+
+
+
+
 
 ?>
