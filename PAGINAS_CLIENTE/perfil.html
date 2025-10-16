@@ -12,17 +12,12 @@
 
   <!-- =================== MENU SUPERIOR =================== -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
-    <!-- Marca/Logo -->
     <a class="navbar-brand" href="index.html">
       <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu">
     </a>
-
-    <!-- Botão responsivo -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Links do menu -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
@@ -31,14 +26,15 @@
       </ul>
     </div>
   </nav>
-  <!-- Conteúdo principal -->
+
+  <!-- =================== CONTEÚDO PRINCIPAL =================== -->
   <main class="container my-4 flex-grow-1">
     <div class="card shadow-sm p-4">
 
       <!-- Avatar -->
       <div class="text-center mb-4">
         <div class="position-relative d-inline-block">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuário" class="avatar-img rounded-circle">
+          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuário" class="avatar-img rounded-circle" width="100">
           <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 rounded-circle">
             <i class="bi bi-plus-lg"></i>
           </button>
@@ -46,21 +42,18 @@
         <p class="mt-2 mb-0 fw-semibold">Usuário</p>
       </div>
 
-      <!-- Formulário de perfil -->
+      <!-- Formulário principal -->
       <form>
-        <!-- Nome -->
         <div class="mb-3">
           <label for="nome" class="form-label fw-bold">Nome:</label>
           <input type="text" id="nome" class="form-control" value="João da Silva">
         </div>
 
-        <!-- Email -->
         <div class="mb-3">
           <label for="email" class="form-label fw-bold">E-mail:</label>
           <input type="email" id="email" class="form-control" value="joao@email.com">
         </div>
 
-        <!-- Senha com botão ver senha -->
         <div class="mb-3">
           <label for="senha" class="form-label fw-bold">Senha:</label>
           <div class="input-group">
@@ -76,25 +69,86 @@
         <div class="d-grid gap-2 mt-4">
           <button type="button" class="btn btn-option">Dados para cadastro de frete</button>
           <button type="button" class="btn btn-option">Meus pedidos</button>
-          <button type="button" class="btn btn-option">Meus endereços</button>
+          <button type="button" class="btn btn-option" id="btnEnderecos">Meus endereços</button>
         </div>
       </form>
 
+      <!-- ============ SEÇÃO DE ENDEREÇOS (ESCONDIDA POR PADRÃO) ============ -->
+      <div id="secaoEnderecos" class="mt-4" style="display: none;">
+        <h5 class="mb-3">Endereços cadastrados</h5>
+
+        <!-- Lista de endereços cadastrados -->
+        <div id="listaEnderecos" class="mb-4">
+          <!-- Exemplo fixo, depois você puxa do banco -->
+          <div class="border rounded p-3 mb-2">
+            <strong>Residencial:</strong> Rua das Flores, 123 - Centro, São Paulo/SP<br>
+            CEP: 01000-000
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Formulário de novo endereço -->
+        <h6 class="fw-bold mb-3">Cadastrar novo endereço</h6>
+        <form id="formEndereco">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">CEP</label>
+              <input type="text" class="form-control" name="cep" placeholder="00000-000">
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Logradouro</label>
+              <input type="text" class="form-control" name="logradouro" placeholder="Rua/Avenida">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Bairro</label>
+              <input type="text" class="form-control" name="bairro">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Cidade</label>
+              <input type="text" class="form-control" name="cidade">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Estado</label>
+              <input type="text" class="form-control" name="estado">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Número</label>
+              <input type="text" class="form-control" name="numero">
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Complemento</label>
+              <input type="text" class="form-control" name="complemento">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" name="tipo">
+                <option value="Residencial">Residencial</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-success px-4">Salvar Endereço</button>
+          </div>
+        </form>
+      </div>
     </div>
   </main>
 
-  <!-- Rodapé -->
+  <!-- =================== RODAPÉ =================== -->
   <footer class="footer bg-custom text-white text-center py-2 mt-auto">
     <small>&copy; 2025 JR Espetos - Todos os direitos reservados</small>
   </footer>
 
-  <!-- Bootstrap JS -->
+  <!-- =================== SCRIPTS =================== -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Botão para mostrar/ocultar senha
+    // Mostrar/ocultar senha
     const toggleSenha = document.getElementById("toggleSenha");
     const senhaInput = document.getElementById("senha");
-
     toggleSenha.addEventListener("click", () => {
       if (senhaInput.type === "password") {
         senhaInput.type = "text";
@@ -103,6 +157,22 @@
         senhaInput.type = "password";
         toggleSenha.innerHTML = '<i class="bi bi-eye"></i>';
       }
+    });
+
+    // Mostrar/esconder seção de endereços
+    const btnEnderecos = document.getElementById("btnEnderecos");
+    const secaoEnderecos = document.getElementById("secaoEnderecos");
+    btnEnderecos.addEventListener("click", () => {
+      secaoEnderecos.style.display =
+        secaoEnderecos.style.display === "none" ? "block" : "none";
+    });
+
+    // Simulação de envio do formulário (HTML puro)
+    const formEndereco = document.getElementById("formEndereco");
+    formEndereco.addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Endereço cadastrado com sucesso! (aqui depois entra o PHP)");
+      formEndereco.reset();
     });
   </script>
 </body>
