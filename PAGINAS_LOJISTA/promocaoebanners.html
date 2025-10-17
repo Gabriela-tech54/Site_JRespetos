@@ -39,11 +39,11 @@
       <h5 class="text-center mb-4 fw-bold">Adicionar Novo Banner</h5>
 
       <!-- Formulário -->
-      <form>
+      <form action="../PHP/banners.php" method="POST" enctype="multipart/form-data">
         <!-- Campo Título -->
         <div class="mb-3">
           <label for="titulo" class="form-label fw-semibold">Título:</label>
-          <input type="text" id="titulo" class="form-control bg-light" placeholder="Digite o título do banner">
+          <input type="text" id="titulo" name="titulo" class="form-control bg-light" placeholder="Digite o título do banner">
         </div>
 
         <!-- Campo Imagem -->
@@ -52,7 +52,7 @@
           <div class="upload-box text-center p-4" onclick="document.getElementById('imagem').click();">
             <i class="bi bi-image fs-1"></i>
             <p class="mb-0">Enviar Imagem</p>
-            <input type="file" id="imagem" class="form-control d-none">
+            <input type="file" id="imagem" name="img" class="form-control d-none">
           </div>
         </div>
 
@@ -60,10 +60,10 @@
         <div class="mb-4 text-center">
           <label class="form-label fw-semibold d-block">Este é um banner de promoção?</label>
           <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" name="promocao" id="promocao-sim" autocomplete="off">
+            <input type="radio" class="btn-check" name="status" id="promocao-sim" autocomplete="off">
             <label class="btn btn-outline-danger" for="promocao-sim">Sim</label>
 
-            <input type="radio" class="btn-check" name="promocao" id="promocao-nao" autocomplete="off" checked>
+            <input type="radio" class="btn-check" name="status" id="promocao-nao" autocomplete="off" checked>
             <label class="btn btn-outline-secondary" for="promocao-nao">Não</label>
           </div>
         </div>
@@ -76,6 +76,40 @@
     </div>
   </main>
   <!-- ================= FIM CONTEÚDO PRINCIPAL ================= -->
+
+
+<!-- Lista de Produtos -->
+    <section class="mt-4" aria-labelledby="titulo-lista-produtos">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between gap-2">
+          <h5 id="titulo-lista-" class="m-0">Banners cadastrados</h5>
+          <!-- Campo de busca decorativo (sem JS) -->
+          <form class="d-inline-block" role="search" aria-label="Busca na tabela (decorativa)">
+            <input type="search" class="form-control form-control-sm" placeholder="Buscar (decorativo)" disabled>
+          </form>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 produtos-tabela">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+              
+                <th>Titulo</th>
+                <th>Imagem</th>
+                <th class="text-end">Situação</th>
+                
+              </tr>
+            </thead>
+            <tbody id="tbBanerrs">
+              <!-- será preenchido pelo JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+     <script src="../JS/banners.js"></script>
 
   <!-- ================= RODAPÉ ================= -->
   <footer class="footer bg-custom text-white text-center py-2 mt-auto">
