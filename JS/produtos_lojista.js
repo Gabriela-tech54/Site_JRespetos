@@ -4,7 +4,7 @@ function listarProdutos(nometabelaprodutos) {
     // Captura o tbody da tabela onde os produtos serão listados
     const tbody = document.querySelector(`#${nometabelaprodutos} tbody`);
     // Endpoint PHP que retorna os produtos em JSON
-    const url = "../php/cadastro_produtos.php?listar=1&format=json";
+    const url = "../php/cadastrar_produto.php?listar=1&format=json";
 
     // --- Função utilitária: escapa caracteres especiais (previne XSS)
     const esc = s => (s || '').replace(/[&<>"']/g, c => ({
@@ -35,9 +35,10 @@ function listarProdutos(nometabelaprodutos) {
         <td class="text-end">${Number(p.quantidade)||0}</td>
         <td class="text-end">R$ ${Number(p.preco).toFixed(2).replace('.',',')}</td>
         <td class="text-center">${p.situacao === '1' ? '<span class="badge bg-success">Sim</span>' : '<span class="badge bg-secondary">Não</span>'}</td>
-        <td>${esc(p.tamanho||'-')}</td>
-        <td>${esc(p.cor||'-')}</td>
-        <td>${esc(p.codigo||'-')}</td>
+         <td class="text-end">
+          <button class="btn btn-sm btn-warning" data-id="${p.idProduto}">Editar</button>
+          <button class="btn btn-sm btn-danger" data-id="${p.idProduto}">Excluir</button>
+        </td>
       </tr>
     `;
 

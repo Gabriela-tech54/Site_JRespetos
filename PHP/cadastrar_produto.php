@@ -14,18 +14,17 @@ function redirecWith($url, $params = []) {
 // ========================= LISTAGEM DE PRODUTOS ========================= //
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
     try {
-        // Comando de listagem de produtos com LEFT JOIN para pegar imagem
+        if (ob_get_length()) ob_clean(); // limpa qualquer saída
+        header("Content-Type: application/json; charset=utf-8");
+
         $sqlListar = "
-            SELECT 
+          SELECT 
                 p.idProdutos, 
                 p.nome, 
                 p.descricao, 
                 p.quantidade, 
                 p.preco, 
-                p.situacao, 
-                COALESCE(p.tamanho, '') AS tamanho, 
-                COALESCE(p.cor, '') AS cor, 
-                COALESCE(p.codigo, '') AS codigo, 
+                p.situacao,
                 ip.foto AS imagem_blob
             FROM Produtos p
             LEFT JOIN Produtos_e_Imagens_produtos pip ON pip.Produtos_idProdutos = p.idProdutos
@@ -36,52 +35,29 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
         $stmtListar = $pdo->query($sqlListar);
         $listar = $stmtListar->fetchAll(PDO::FETCH_ASSOC);
 
-        $formato = isset($_GET["format"]) ? strtolower($_GET["format"]) : "json";
+        $saida = array_map(function ($item) {
+            return [
+                "idProduto" => (int)$item["idProdutos"],
+                "nome"      => $item["nome"] ?? "",
+                "descricao" => $item["descricao"] ?? "",
+                "quantidade"=> (int)($item["quantidade"] ?? 0),
+                "preco"     => (float)($item["preco"] ?? 0),
+                "situacao"  => !empty($item["situacao"]) ? "1" : "0",
+                "imagem"    => !empty($item["imagem_blob"]) ? base64_encode($item["imagem_blob"]) : null
+            ];
+        }, $listar);
 
-        if ($formato === "json") {
-            // Garante que nenhum caractere seja emitido antes do JSON
-            ob_clean();
-            // Mapeia os produtos e converte a imagem para Base64
-            $saida = array_map(function ($item) {
-                return [
-                    "idProduto" => (int)($item["idProdutos"]),
-                    "nome"      => $item["nome"] ?? "",
-                    "descricao" => $item["descricao"] ?? "",
-                    "quantidade"=> (int)($item["quantidade"] ?? 0),
-                    "preco"     => (float)($item["preco"] ?? 0),
-                    "situacao"  => !empty($item["situacao"]) ? "1" : "0",
-                    "tamanho"   => $item["tamanho"] ?? "",
-                    "cor"       => $item["cor"] ?? "",
-                    "codigo"    => $item["codigo"] ?? "",
-                    "imagem"    => !empty($item["imagem_blob"]) ? base64_encode($item["imagem_blob"]) : null
-                ];
-            }, $listar);
-
-            header("Content-Type: application/json; charset=utf-8");
-            echo json_encode(["ok" => true, "produtos" => $saida], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        // Retorno padrão HTML (ex: <option>)
-        header("Content-Type: text/html; charset=utf-8");
-        foreach ($listar as $item) {
-            $id = (int)$item["idProdutos"];
-            $nome = htmlspecialchars($item["nome"], ENT_QUOTES, "UTF-8");
-            echo "<option value=\"{$id}\">{$nome}</option>\n";
-        }
+        echo json_encode(["ok" => true, "produtos" => $saida], JSON_UNESCAPED_UNICODE);
         exit;
 
     } catch (Throwable $e) {
-        if ($formato === "json") {
-            header("Content-Type: application/json; charset=utf-8", true, 500);
-            echo json_encode(
-                ["ok" => false, "error" => "Erro ao listar produtos", "detail" => $e->getMessage()],
-                JSON_UNESCAPED_UNICODE
-            );
-        } else {
-            header("Content-Type: text/html; charset=utf-8", true, 500);
-            echo "<option disabled>Erro ao carregar produtos</option>";
-        }
+        if (ob_get_length()) ob_clean();
+        header("Content-Type: application/json; charset=utf-8", true, 500);
+        echo json_encode([
+            "ok" => false,
+            "error" => "Erro ao listar produtos",
+            "detail" => $e->getMessage()
+        ], JSON_UNESCAPED_UNICODE);
         exit;
     }
 }
@@ -93,13 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
 
 
 
-
-
-
-
-
-
-
+// ============================ CADASTRO ============================ //
 function readImageToBlob(?array $file): ?string {
   if (!$file || !isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) return null;
   $content = file_get_contents($file['tmp_name']);
@@ -174,4 +144,60 @@ try {
   if ($pdo->inTransaction()) $pdo->rollBack();
   redirecWith("../paginas_lojista/cadastroproduto.html", ["erro" => "Erro no banco de dados: " . $e->getMessage()]);
 }
-?>
+
+
+// ============================ EXCLUSÃO ============================ //
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'excluir') {
+    try {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            echo json_encode(["ok" => false, "error" => "ID inválido para exclusão"]);
+            exit;
+        }
+
+        $st = $pdo->prepare("DELETE FROM Produtos WHERE idProdutos = :id");
+        $st->bindValue(':id', $id, PDO::PARAM_INT);
+        $st->execute();
+
+        echo json_encode(["ok" => true, "excluir" => "ok"]);
+        exit;
+
+    } catch (Throwable $e) {
+        echo json_encode(["ok" => false, "error" => $e->getMessage()]);
+        exit;
+    }
+}
+
+// ============================ EDIÇÃO ============================ //
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'atualizar') {
+    try {
+        $id = (int)($_POST['id'] ?? 0);
+        $nome = trim($_POST['nome'] ?? '');
+        $descricao = trim($_POST['descricao'] ?? '');
+        $quantidade = (int)($_POST['quantidade'] ?? 0);
+        $preco = (float)($_POST['preco'] ?? 0);
+        $situacao = (int)($_POST['situacao'] ?? 0);
+
+        if ($id <= 0) {
+            echo json_encode(["ok" => false, "error" => "ID inválido para edição"]);
+            exit;
+        }
+
+        $sql = "UPDATE produtos SET nome = :nome, descricao = :descricao, quantidade = :quantidade, preco = :preco, situacao = :situacao WHERE idProdutos = :id";
+        $st = $pdo->prepare($sql);
+        $st->bindValue(':nome', $nome, PDO::PARAM_STR);
+        $st->bindValue(':descricao', $descricao, PDO::PARAM_STR);
+        $st->bindValue(':quantidade', $quantidade, PDO::PARAM_INT);
+        $st->bindValue(':preco', $preco);
+        $st->bindValue(':situacao', $situacao, PDO::PARAM_INT);
+        $st->bindValue(':id', $id, PDO::PARAM_INT);
+        $st->execute();
+
+        echo json_encode(["ok" => true]);
+        exit;
+
+    } catch (\Throwable $e) {
+        echo json_encode(["ok" => false, "error" => $e->getMessage()]);
+        exit;
+    }
+}
