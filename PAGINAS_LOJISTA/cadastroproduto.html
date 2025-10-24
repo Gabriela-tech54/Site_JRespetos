@@ -1,16 +1,15 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>cadastro produto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  </head>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastro de Produto</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
-  <!-- Inicio do Menu Superior ----------------------------------------->
+  <!-- Menu Superior -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
     <a class="navbar-brand" href="index.html">
       <img src="../IMG/logo.mr.png" alt="Logo JR Espetos" class="logo-menu">
@@ -26,31 +25,26 @@
       </ul>
     </div>
   </nav>
-  <!-- Fim do Menu Superior ----------------------------->
 
   <!-- Container principal -->
   <main class="container my-5 flex-grow-1">
     <div class="card shadow p-4">
-
-      <!-- Título da Página -->
       <h2 class="text-center fw-bold mb-4">Adicionar Novo Produto</h2>
 
-      <!-- Formulário de cadastro de produto -->
-      <form action="../PHP/cadastrar_produto.php" method="POST" enctype="multipart/form-data"id="formProduto">
+      <form action="../PHP/cadastrar_produto.php" method="POST" enctype="multipart/form-data" id="formProduto">
+        <input type="hidden" name="id" value="123">
+        <input type="hidden" name="acao" value="atualizar">
 
-        <!-- Nome do produto -->
         <div class="mb-3">
           <label for="nomeProduto" class="form-label fw-bold">Nome do produto:</label>
-          <input type="text" id="nomeProduto" class="form-control" placeholder="Digite o nome do produto" name="nomeproduto" required>
+          <input type="text" id="nomeProduto" class="form-control" placeholder="Digite o nome do produto" name="nome" required>
         </div>
 
-        <!-- Descrição -->
         <div class="mb-3">
           <label for="descricao" class="form-label fw-bold">Descrição:</label>
           <textarea id="descricao" name="descricao" class="form-control" rows="4" placeholder="Digite a descrição do produto"></textarea>
         </div>
 
-        <!-- Quantidade e Imagem -->
         <div class="row g-3 mt-3">
           <div class="col-md-6">
             <label for="quantidade" class="form-label fw-bold">Quantidade:</label>
@@ -62,92 +56,125 @@
           </div>
         </div>
 
-        <!-- Preço do Produto-->
-          <div class="col-md-6">
-            <label for="preco" class="form-label fw-bold">Preço:</label>
-            <div class="input-group">
-              <span class="input-group-text">R$</span>
-              <input type="number" id="preco" name="preco" class="form-control" step="0.01" placeholder="0,00" required>
-            </div>
+        <div class="col-md-6 mt-3">
+          <label for="preco" class="form-label fw-bold">Preço:</label>
+          <div class="input-group">
+            <span class="input-group-text">R$</span>
+            <input type="number" id="preco" name="preco" class="form-control" step="0.01" placeholder="0,00" required>
           </div>
-          
-        <!-- Status do Produto -->
+        </div>
+
         <div class="mt-4">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="status" id="ativo" value="true" checked>
+            <input class="form-check-input" type="radio" name="situacao" id="ativo" value="1" checked>
             <label class="form-check-label" for="ativo">Produto Ativo</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="status" id="naoAtivo" value="false">
+            <input class="form-check-input" type="radio" name="situacao" id="naoAtivo" value="0">
             <label class="form-check-label" for="naoAtivo">Produto não Ativo</label>
           </div>
         </div>
 
-        <!-- Botões -->
         <div class="d-flex justify-content-between mt-4">
           <button type="submit" class="btn btn-danger">Salvar produto</button>
           <a href="index.html" class="btn btn-secondary">Cancelar/voltar</a>
         </div>
       </form>
-
     </div>
   </main>
 
-  <!-- Rodapé -->
+  <!-- Lista de Produtos -->
+  <section class="mt-4" aria-labelledby="titulo-lista-produtos">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <h5 id="titulo-lista-produtos" class="m-0">Produtos cadastrados</h5>
+        <form class="d-inline-block" role="search" aria-label="Busca na tabela (decorativa)">
+          <input type="search" class="form-control form-control-sm" placeholder="Buscar (decorativo)" disabled>
+        </form>
+      </div>
+
+      <div class="table-responsive">
+        <table id="produtos-tabela" class="table table-hover align-middle mb-0 produtos-tabela">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th class="text-end">Qtd</th>
+              <th class="text-end">Preço</th>
+              <th class="text-center">Situação</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- será preenchido pelo JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Edição -->
+  <div class="modal fade" id="editarProdutoModal" tabindex="-1" aria-labelledby="editarProdutoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formEditarProduto">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarProdutoModalLabel">Editar Produto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editarIdProduto" name="id">
+
+            <div class="mb-3">
+              <label for="editarNomeProduto" class="form-label">Nome do Produto</label>
+              <input type="text" id="editarNomeProduto" name="nome" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="editarDescricao" class="form-label">Descrição</label>
+              <textarea id="editarDescricao" name="descricao" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="editarQuantidade" class="form-label">Quantidade</label>
+              <input type="number" id="editarQuantidade" name="quantidade" class="form-control" min="0" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="editarPreco" class="form-label">Preço</label>
+              <input type="number" id="editarPreco" name="preco" class="form-control" step="0.01" min="0" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Situação</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="situacao" id="editarAtivo" value="1">
+                  <label class="form-check-label" for="editarAtivo">Ativo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="situacao" id="editarInativo" value="0">
+                  <label class="form-check-label" for="editarInativo">Inativo</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer bg-custom text-white text-center py-2 mt-auto">
     <small>&copy; 2025 JR Espetos - Todos os direitos reservados</small>
   </footer>
 
-  <!-- Lista de Produtos -->
-    <section class="mt-4" aria-labelledby="titulo-lista-produtos">
-      <div class="card shadow-sm">
-        <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between gap-2">
-          <h5 id="titulo-lista-produtos" class="m-0">Produtos cadastrados</h5>
-          <!-- Campo de busca decorativo (sem JS) -->
-          <form class="d-inline-block" role="search" aria-label="Busca na tabela (decorativa)">
-            <input type="search" class="form-control form-control-sm" placeholder="Buscar (decorativo)" disabled>
-          </form>
-        </div>
-
-        <div class="table-responsive">
-          <table id="produtos-tabela" class="table table-hover align-middle mb-0 produtos-tabela">
-            <thead class="table-light">
-              <tr>
-                <th>ID</th>
-              
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th class="text-end">Qtd</th>
-                <th class="text-end">Preço</th>
-              
-                
-              </tr>
-            </thead>
-            <tbody id="tbProdutos">
-              <!-- será preenchido pelo JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
- <script src="../JS/produtos_lojista.js"></script>
-
-
-  <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  <!-- Script para funcionamento do formulário 
- <script>
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("sucesso") === "1") {
-    alert("Produto salvo com sucesso!");
-  }
-  if (params.get("erro")) {
-    alert("Erro ao salvar: " + params.get("erro"));
-  }
-</script>
--->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../JS/produtos_lojista.js"></script>
 </body>
 </html>
