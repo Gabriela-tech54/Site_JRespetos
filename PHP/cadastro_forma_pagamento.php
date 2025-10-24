@@ -1,119 +1,80 @@
 <?php
-// Conectando este arquivo ao banco de dados
-require_once __DIR__ ."/conexao.php";
+require_once __DIR__ . "/conexao.php";
 
-// função para capturar os dados passados de uma página a outra
-function redirecWith($url,$params=[]){
-// verifica se os os paramentros não vieram vazios
- if(!empty($params)){
-// separar os parametros em espaços diferentes
-$qs= http_build_query($params);
-$sep = (strpos($url,'?') === false) ? '?': '&';
-$url .= $sep . $qs;
-}
-// joga a url para o cabeçalho no navegador
-header("Location:  $url");
-// fecha o script
-exit;
+// Função de redirecionamento
+function redirecWith($url, $params = []) {
+    if(!empty($params)) {
+        $qs = http_build_query($params);
+        $sep = (strpos($url,'?') === false) ? '?' : '&';
+        $url .= $sep . $qs;
+    }
+    header("Location: $url");
+    exit;
 }
 
+// ================= GET - Listar =================
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["listar"])) {
-  try {
-    // Comando de listagem
-    $sqllistar = "SELECT idFormas_pagamento AS id, nome 
-                  FROM Formas_pagamento 
-                  ORDER BY nome";
+    try {
+        $stmt = $pdo->query("SELECT idFormas_pagamento AS id, nome FROM Formas_pagamento ORDER BY nome");
+        $formas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Executa
-    $stmtlistar = $pdo->query($sqllistar);
-    $listar = $stmtlistar->fetchAll(PDO::FETCH_ASSOC);
+        $formato = strtolower($_GET["format"] ?? "option");
 
-    // Formato do retorno
-    $formato = isset($_GET["format"]) ? strtolower($_GET["format"]) : "option";
+        if ($formato === "json") {
+            header("Content-Type: application/json; charset=utf-8");
+            echo json_encode(["ok" => true, "Formas_pagamento" => $formas], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
 
-    if ($formato === "json") {
-      header("Content-Type: application/json; charset=utf-8");
-      echo json_encode(["ok" => true, "Formas_pagamento" => $listar], JSON_UNESCAPED_UNICODE);
-      exit;
+        // Retorno padrão HTML
+        header("Content-Type: text/html; charset=utf-8");
+        foreach ($formas as $f) {
+            $id = (int)$f["id"];
+            $nome = htmlspecialchars($f["nome"], ENT_QUOTES, "UTF-8");
+            echo "<option value=\"$id\">$nome</option>\n";
+        }
+        exit;
+
+    } catch (Throwable $e) {
+        header("Content-Type: application/json; charset=utf-8", true, 500);
+        echo json_encode(["ok" => false, "error" => "Erro ao listar formas de pagamento", "detail" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
+// ================= POST =================
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $acao = $_POST['acao'] ?? '';
+
+    if ($acao === 'editar') {
+        $id = intval($_POST['id']);
+        $nome = trim($_POST['nomepagamento']);
+        $stmt = $pdo->prepare("UPDATE Formas_pagamento SET nome=:nome WHERE idFormas_pagamento=:id");
+        $ok = $stmt->execute([':nome'=>$nome, ':id'=>$id]);
+        echo json_encode(['ok'=>$ok]);
+        exit;
     }
 
-    // RETORNO PADRÃO (options)
-    header("Content-Type: text/html; charset=utf-8");
-    foreach ($listar as $lista) {
-      $id   = (int)$lista["id"];
-      $nome = htmlspecialchars($lista["nome"], ENT_QUOTES, "UTF-8");
-      echo "<option value=\"{$id}\">{$nome}</option>\n";
+    if ($acao === 'excluir') {
+        $id = intval($_POST['id']);
+        $stmt = $pdo->prepare("DELETE FROM Formas_pagamento WHERE idFormas_pagamento=:id");
+        $ok = $stmt->execute([':id'=>$id]);
+        echo json_encode(['ok'=>$ok]);
+        exit;
     }
-    exit;
 
-  } catch (Throwable $e) {
-    // Erro na listagem
-    if (isset($_GET["format"]) && strtolower($_GET["format"]) === "json") {
-      header("Content-Type: application/json; charset=utf-8", true, 500);
-      echo json_encode(
-        ["ok" => false, "error" => "Erro ao listar formas de pagamento", "detail" => $e->getMessage()],
-        JSON_UNESCAPED_UNICODE
-      );
+    // ================= Cadastro =================
+    $nomepagamento = $_POST['nomepagamento'] ?? '';
+    if(trim($nomepagamento) === '') {
+        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro"=> "Preencha o campo nome"]);
+    }
+
+    $stmt = $pdo->prepare("INSERT INTO Formas_pagamento (nome) VALUES (:nome)");
+    $ok = $stmt->execute([':nome' => $nomepagamento]);
+
+    if ($ok) {
+        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["cadastro"=>"ok"]);
     } else {
-      header("Content-Type: text/html; charset=utf-8", true, 500);
-      echo "<option disabled>Erro ao carregar formas de pagamento</option>";
+        redirecWith("../paginas_lojista/fretepagamentolojista.html", ["erro"=>"Erro ao cadastrar"]);
     }
-    exit;
-  }
 }
-
-
-
-
-
-try{
-// SE O METODO DE ENVIO FOR DIFERENTE DO POST
-    if($_SERVER["REQUEST_METHOD"] !== "POST"){
-        //VOLTAR À TELA DE CADASTRO E EXIBIR ERRO
-        redirecWith("../paginas_lojista/fretepagamentolojista.html",
-           ["erro"=> "Metodo inválido"]);
-    }
-// variaveis para receber os dados da tela
-    $nomepagamento = $_POST["nomepagamento"];
-
-// validação
-    $erros_validacao=[];
-    //se qualquer campo for vazio
-    if($nomepagamento === ""){
-        $erros_validacao[]="Preencha o campo";
-    }    
-
-/* Inserir o frete no banco de dados */
-    $sql ="INSERT INTO Formas_pagamento (nome)
-     Values (:nomepagamento)";
-     // executando o comando no banco de dados
-     $inserir = $pdo->prepare($sql)->execute([
-        ":nomepagamento" => $nomepagamento,
-             
-     ]);
-
-     /* Verificando se foi cadastrado no banco de dados */
-     if($inserir){
-        redirecWith("../paginas_lojista/fretepagamentolojista.html",
-        ["cadastro" => "ok"]) ;
-     }else{
-        redirecWith("../paginas_lojista/fretepagamentolojista.html"
-        ,["erro" =>"Erro ao cadastrar no banco
-         de dados"]);
-     }
-
-
-
-
-
-}catch(Exception $e){
-redirecWith("../paginas_lojista/fretepagamentolojista.html",
-      ["erro" => "Erro no banco de dados: "
-      .$e->getMessage()]);
-}
-
-
-
-
-
-?>
