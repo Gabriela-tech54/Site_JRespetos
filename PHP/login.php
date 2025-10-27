@@ -54,8 +54,8 @@ try {
     // Redirecionar para a página inicial do cliente
    redirecWith("../PAGINAS_CLIENTE/telainicial.html", ["login" => "ok"]);
 
-
 } catch (PDOException $e) {
     redirecWith("../PAGINAS_CLIENTE/login.html", ["erro" => "Erro no banco de dados: " . $e->getMessage()]);
 }
-?>
+
+

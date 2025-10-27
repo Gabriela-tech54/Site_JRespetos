@@ -12,7 +12,7 @@
 
   <!-- =================== MENU SUPERIOR =================== -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-custom px-3">
-    <a class="navbar-brand" href="index.html">
+    <a class="navbar-brand" >
       <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -20,27 +20,55 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link" href="telainicial.html">Início</a></li>
         <li class="nav-item"><a class="nav-link active" href="carrinho.html">Carrinho</a></li>
       </ul>
     </div>
   </nav>
+<!-- =================== CONTEÚDO PRINCIPAL =================== -->
+<main class="container my-4 flex-grow-1">
+  <div class="card shadow-sm p- <!-- Avatar --">
+<div class="text-center mb-4">
+  <div class="position-relative d-inline-block">
 
-  <!-- =================== CONTEÚDO PRINCIPAL =================== -->
-  <main class="container my-4 flex-grow-1">
-    <div class="card shadow-sm p-4">
+    <!-- Imagem do usuário -->
+  <img id="avatarPreview" 
+     src="../php/upload_avatar.php" 
+     class="rounded-circle" width="100" height="100">
 
-      <!-- Avatar -->
-      <div class="text-center mb-4">
-        <div class="position-relative d-inline-block">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuário" class="avatar-img rounded-circle" width="100">
-          <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 rounded-circle">
-            <i class="bi bi-plus-lg"></i>
-          </button>
-        </div>
-        <p class="mt-2 mb-0 fw-semibold">Usuário</p>
-      </div>
+
+    <!-- Botão de upload -->
+    <form id="avatarForm" method="POST" action="../PHP/upload_avatar.php" enctype="multipart/form-data">
+      <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display:none">
+      <button type="button" 
+              class="btn btn-sm btn-dark position-absolute bottom-0 end-0 rounded-circle" 
+              style="width:30px; height:30px; font-weight:bold; font-size:18px; padding:0;"
+              onclick="document.getElementById('avatarInput').click()">
+        +
+      </button>
+    </form>
+  </div>
+  <p class="mt-2 mb-0 fw-semibold">Usuário</p>
+</div>
+
+<script>
+  const input = document.getElementById('avatarInput');
+  const preview = document.getElementById('avatarPreview');
+  const form = document.getElementById('avatarForm');
+
+  input.addEventListener('change', function() {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result; // preview da imagem
+      }
+      reader.readAsDataURL(input.files[0]);
+      form.submit(); // envia automaticamente
+    }
+  });
+</script>
+
+
 
       <!-- Formulário principal -->
       <form>
