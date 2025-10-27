@@ -1012,6 +1012,13 @@ footer a:hover {
   color: #dcdcdc;
 }
 
+/* Estilo do carousel de banners */
+#carouselBanners .carousel-item img {
+  height: 200px;      /* Altura fixa, ajuste para ficar proporcional à sua referência */
+  object-fit: cover;  /* Corta e ajusta a imagem para preencher sem deformar */
+  border-radius: 10px; /* Opcional: mesma borda arredondada do card */
+}
+
 /* =========================================================
    FIM- ESTILOS DA TELA INICIAL
    ========================================================= */
@@ -1246,3 +1253,6 @@ section h6 {
 /*=========================================================
  FIM DA TELA FRETE & PAGAMENTO- TELA DO LOJISTA
 =========================================================*/
+
+
+
