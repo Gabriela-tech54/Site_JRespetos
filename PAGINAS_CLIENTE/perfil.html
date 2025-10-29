@@ -31,10 +31,14 @@
 <div class="text-center mb-4">
   <div class="position-relative d-inline-block">
 
-    <!-- Imagem do usuário -->
-  <img id="avatarPreview" 
-     src="../php/upload_avatar.php" 
-     class="rounded-circle" width="100" height="100">
+  
+ <!-- Avatar / Ícone de Perfil -->
+<div class="rounded-circle border border-2 border-secondary" 
+     style="width:100px; height:100px; background-image:url('../IMG/perfil.png'); background-size:cover; background-position:center;">
+</div>
+
+
+
 
 
     <!-- Botão de upload -->
@@ -81,17 +85,18 @@
           <label for="email" class="form-label fw-bold">E-mail:</label>
           <input type="email" id="email" class="form-control" value="joao@email.com">
         </div>
+<div class="mb-3">
+  <label for="senha" class="form-label fw-bold">Senha:</label>
+  <div class="input-group">
+    <input type="password" id="senha" class="form-control" value="12345678" disabled>
+    <button class="btn btn-outline-secondary" type="button" id="toggleSenha">
+      <i class="bi bi-eye" id="iconSenha"></i>
+    </button>
+  </div>
+  <a href="#" class="mudar-senha">Mudar senha</a>
+</div>
 
-        <div class="mb-3">
-          <label for="senha" class="form-label fw-bold">Senha:</label>
-          <div class="input-group">
-            <input type="password" id="senha" class="form-control" value="12345678" disabled>
-            <button class="btn btn-outline-secondary" type="button" id="toggleSenha">
-              <i class="bi bi-eye"></i>
-            </button>
-          </div>
-          <a href="#" class="mudar-senha">Mudar senha</a>
-        </div>
+
 
         <!-- Botões de opções -->
         <div class="d-grid gap-2 mt-4">

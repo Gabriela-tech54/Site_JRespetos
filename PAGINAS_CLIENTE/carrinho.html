@@ -1,190 +1,232 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-   <!--Bootstrap CSS via CDN-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  
-    <link rel="stylesheet" href="../css/style.css" />
-  
-    </head>
+    <title>Meu Carrinho - JR Espetos</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+          crossorigin="anonymous">
+
+    <!-- Ícones Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="../css/style.css">
   </head>
+
   <body class="bg-light">
 
+    <!-- =================== MENU SUPERIOR =================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom py-3 px-3 px-md-4">
+      <a class="navbar-brand d-flex align-items-center" >
+        <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-navbar img-fluid">
+      </a>
 
-  <!-- =================== MENU SUPERIOR =================== -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-custom py-3 px-3 px-md-4">
-  <!-- Marca/Logo -->
-  <a class="navbar-brand d-flex align-items-center" href="index.html">
-    <img src="../IMG/logotr.png" alt="Logo JR Espetos" class="logo-menu img-fluid">
-  </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <!-- Botão responsivo -->
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto text-center text-lg-start">
+          <li class="nav-item"><a class="nav-link" href="telainicial.html">Início</a></li>
+           <li class="nav-item"><a class="nav-link" href="perfil.html">Perfil</a></li>
+        </ul>
+      </div>
+    </nav>
 
-  <!-- Links do menu -->
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ms-auto text-center text-lg-start">
-      <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
-      <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
-      <li class="nav-item"><a class="nav-link active" href="carrinho.html">Carrinho</a></li>
-    </ul>
-  </div>
-</nav>
+    <!-- =================== CONTEÚDO DO CARRINHO =================== -->
+    <div class="container my-4">
 
+      <!-- Título -->
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h4 class="fw-bold mb-2 mb-md-0">Meu Carrinho</h4>
+        <span class="text-muted">Resumo de Compra</span>
+      </div>
 
-  <!-- Inicio do Container Carrinho ----------------------------------------->
-  <div class="container my-4">
+      <!-- Lista de Itens do Carrinho -->
+      <div class="list-group shadow-sm rounded" id="lista-carrinho">
 
-    <!-- Título -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 class="fw-bold">Meu carrinho</h4>
-      <span class="text-muted">Sumário</span>
-    </div>
+        <!-- Produto 1 -->
+        <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+          <input class="form-check-input me-2" type="checkbox">
 
-    <!-- Lista de Itens do Carrinho -->
-    <div class="list-group" id="lista-carrinho">
+          <img src="../IMG/esp.carne.png" alt="Espetinho de frango" class="img-fluid cart-img">
 
-      <!-- Produto 1 -->
-      <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-        <input class="form-check-input me-2" type="checkbox">
-
-        <img src="../IMG/esp.carne.png" alt="Espetinho" class="img-fluid cart-img">
-
-        <div class="flex-grow-1">
-          <p class="mb-1 fw-semibold">Espetinho de frango</p>
-          <div class="d-flex align-items-center gap-2">
-            <label class="form-label mb-0">Qtd:</label>
-            <input type="number" class="form-control form-control-sm w-25 quantidade" value="4" min="1">
+          <div class="flex-grow-1">
+            <p class="mb-1 fw-semibold">Espetinho de Fraudinha</p>
+            <div class="d-flex align-items-center gap-2">
+              <label class="form-label mb-0">Qtd:</label>
+              <input type="number" class="form-control form-control-sm w-25 quantidade" value="4" min="1">
+            </div>
+            <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
           </div>
-          <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary btn-sm editar-item" title="Editar quantidade">
+              <i class="bi bi-pencil-square me-1"></i> Editar
+            </button>
+            <button class="btn btn-outline-danger btn-sm remover-item" title="Remover item do carrinho">
+              <i class="bi bi-trash3 me-1"></i> Remover
+            </button>
+          </div>
         </div>
 
-        <div class="d-flex gap-2">
-  <!-- Editar quantidade -->
-  <button class="btn btn-outline-primary btn-sm" title="Editar quantidade">
-    <i class="bi bi-pencil-square me-1"></i> Editar
-  </button>
+        <!-- Produto 2 -->
+        <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+          <input class="form-check-input me-2" type="checkbox">
 
-  <!-- Remover item -->
-  <button class="btn btn-outline-danger btn-sm remover-item" title="Remover item do carrinho">
-    <i class="bi bi-trash3 me-1"></i> Remover
-  </button>
-</div>
+          <img src="../IMG/esp.coracao.png" alt="Espetinho de boi c/ mandioca" class="img-fluid cart-img">
+
+          <div class="flex-grow-1">
+            <p class="mb-1 fw-semibold">Espetinho de coracão c/ mandioca</p>
+            <div class="d-flex align-items-center gap-2">
+              <label class="form-label mb-0">Qtd:</label>
+              <input type="number" class="form-control form-control-sm w-25 quantidade" value="2" min="1">
+            </div>
+            <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary btn-sm editar-item" title="Editar quantidade">
+              <i class="bi bi-pencil-square me-1"></i> Editar
+            </button>
+            <button class="btn btn-outline-danger btn-sm remover-item" title="Remover item do carrinho">
+              <i class="bi bi-trash3 me-1"></i> Remover
+            </button>
+          </div>
+        </div>
+
+        <!-- Espaço em branco para novos produtos -->
+        <div class="list-group-item placeholder-item"></div>
 
       </div>
 
-      <!-- Produto 2 -->
-      <div class="list-group-item d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-        <input class="form-check-input me-2" type="checkbox">
+      <!-- Resumo -->
+      <div id="resumo" class="d-flex justify-content-between align-items-center mt-4 p-3 bg-white shadow-sm rounded flex-wrap gap-2">
+        <small>Itens: <strong id="totalItens">0</strong></small>
+        <small>Subtotal: <strong>R$ <span id="subtotal">0.00</span></strong></small>
+        <small>Total: <strong>R$ <span id="total">0.00</span></strong></small>
+      </div>
 
-        <img src="../IMG/esp.coracao.png" alt="Espetinho" class="img-fluid cart-img">
-
-        <div class="flex-grow-1">
-          <p class="mb-1 fw-semibold">Espetinho de boi c/ mandioca</p>
-          <div class="d-flex align-items-center gap-2">
-            <label class="form-label mb-0">Qtd:</label>
-            <input type="number" class="form-control form-control-sm w-25 quantidade" value="2" min="1">
-          </div>
-          <small class="text-muted">Preço: R$ <span class="preco">7.00</span></small>
-        </div>
-
-        <div class="d-flex gap-2">
-  <!-- Editar quantidade -->
-  <button class="btn btn-outline-primary btn-sm" title="Editar quantidade">
-    <i class="bi bi-pencil-square me-1"></i> Editar
-  </button>
-
-  <!-- Remover item -->
-  <button class="btn btn-outline-danger btn-sm remover-item" title="Remover item do carrinho">
-    <i class="bi bi-trash3 me-1"></i> Remover
-  </button>
-</div>
-
+      <!-- Botões de ação centralizados -->
+      <div class="d-flex justify-content-center mt-3 flex-wrap gap-2">
+        <button id="removerSelecionados" class="btn btn-danger botao-acao">
+          <i class="bi bi-trash"></i> Remover Itens Selecionados
+        </button>
+        <button id="finalizarCompra" class="btn btn-success botao-acao">
+          <i class="bi bi-cart-check"></i> Finalizar Compra
+        </button>
+      </div>
 
     </div>
-    <!-- Fim da Lista de Itens ----------------------------------------->
 
-    <!-- Resumo -->
-    <div id="resumo" class="d-flex justify-content-between align-items-center mt-4 p-3 bg-white shadow-sm rounded">
-      <small>Quantidade de Itens: <strong id="totalItens">0</strong></small>
-      <small>Subtotal: <strong>R$ <span id="subtotal">0.00</span></strong></small>
-      <small>Total: <strong>R$ <span id="total">0.00</span></strong></small>
-    </div>
+    <!-- =================== RODAPÉ =================== -->
+    <footer class="bg-custom w-100 mt-4 text-white text-center py-3">
+      <p class="mb-0">&copy; 2025 JR Espetos - Todos os direitos reservados</p>
+    </footer>
 
-    <!-- Botões de Ação -->
-    <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
-      <button id="removerSelecionados" class="btn btn-danger flex-grow-1">Remover Itens Selecionados</button>
-      <button class="btn btn-success flex-grow-1">Gerar Compra</button>
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-  </div>
-  <!-- Fim do Container Carrinho ----------------------------------------->
-
-  <!-- Inicio do Rodapé -----------------------------------------> 
-   <footer class="bg-custom w-100 mt-4">
-  <div class="container-fluid py-3 px-3 px-md-4 d-flex justify-content-center align-items-center">
-    <p class="mb-0">&copy; 2025 JR Espetos - Todos os direitos reservados</p>
-  </div>
-</footer>
-
-   <!-- Fim do Rodapé ----------------------------------------->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script Carrinho -->
   <script>
-    // Inicio do Script de Cálculo do Carrinho --------------------
-    function atualizarCarrinho() {
-      let totalItens = 0;
-      let subtotal = 0;
+document.addEventListener("DOMContentLoaded", function() {
 
-      document.querySelectorAll(".list-group-item").forEach(item => {
-        const qtdInput = item.querySelector(".quantidade");
-        const precoSpan = item.querySelector(".preco");
+  // Função para atualizar subtotal, total e quantidade
+  function atualizarCarrinho() {
+    let totalItens = 0;
+    let subtotal = 0;
 
-        if (qtdInput && precoSpan) {
-          const qtd = parseInt(qtdInput.value) || 0;
-          const preco = parseFloat(precoSpan.textContent) || 0;
+    document.querySelectorAll(".list-group-item").forEach(item => {
+      const qtdInput = item.querySelector(".quantidade");
+      const precoSpan = item.querySelector(".preco");
 
-          totalItens += qtd;
-          subtotal += qtd * preco;
-        }
-      });
+      if (qtdInput && precoSpan) {
+        const qtd = parseInt(qtdInput.value) || 0;
+        const preco = parseFloat(precoSpan.textContent) || 0;
 
-      document.getElementById("totalItens").textContent = totalItens;
-      document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-      document.getElementById("total").textContent = subtotal.toFixed(2);
-    }
-
-    // Atualiza ao alterar quantidade
-    document.querySelectorAll(".quantidade").forEach(input => {
-      input.addEventListener("change", atualizarCarrinho);
+        totalItens += qtd;
+        subtotal += qtd * preco;
+      }
     });
 
-    // Botão remover item individual
-    document.querySelectorAll(".remover-item").forEach(btn => {
-      btn.addEventListener("click", function () {
-        this.closest(".list-group-item").remove();
-        atualizarCarrinho();
-      });
-    });
+    document.getElementById("totalItens").textContent = totalItens;
+    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+    document.getElementById("total").textContent = subtotal.toFixed(2);
+  }
 
-    // Botão remover selecionados
-    document.getElementById("removerSelecionados").addEventListener("click", function () {
-      document.querySelectorAll(".list-group-item").forEach(item => {
-        if (item.querySelector(".form-check-input").checked) {
-          item.remove();
-        }
-      });
+  // Atualiza ao alterar quantidade
+  document.querySelectorAll(".quantidade").forEach(input => {
+    input.addEventListener("change", atualizarCarrinho);
+  });
+
+  // Botão remover item individual
+  document.querySelectorAll(".remover-item").forEach(btn => {
+    btn.addEventListener("click", function () {
+      this.closest(".list-group-item").remove();
       atualizarCarrinho();
     });
+  });
 
-    // Calcula no carregamento inicial
+  // Botão editar quantidade individual
+  document.querySelectorAll(".editar-item").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const item = this.closest(".list-group-item");
+      const qtdInput = item.querySelector(".quantidade");
+      if (qtdInput) {
+        let novaQtd = prompt("Digite a nova quantidade:", qtdInput.value);
+        if (novaQtd !== null) {
+          novaQtd = parseInt(novaQtd);
+          if (!isNaN(novaQtd) && novaQtd > 0) {
+            qtdInput.value = novaQtd;
+            atualizarCarrinho();
+          } else {
+            alert("Quantidade inválida!");
+          }
+        }
+      }
+    });
+  });
+
+  // Botão remover itens selecionados
+  document.getElementById("removerSelecionados").addEventListener("click", function () {
+    let algumSelecionado = false;
+
+    document.querySelectorAll(".list-group-item").forEach(item => {
+      const checkbox = item.querySelector(".form-check-input");
+      if (checkbox && checkbox.checked) {
+        item.remove();
+        algumSelecionado = true;
+      }
+    });
+
+    if (!algumSelecionado) {
+      alert("Nenhum item selecionado para remover!");
+    }
+
     atualizarCarrinho();
-    // Fim do Script de Cálculo do Carrinho --------------------
-  </script>
-</body>
+  });
+
+  // Botão finalizar compra
+  document.getElementById("finalizarCompra").addEventListener("click", function () {
+    const totalItens = parseInt(document.getElementById("totalItens").textContent);
+    if (totalItens === 0) {
+      alert("O carrinho está vazio!");
+    } else {
+      alert(`Compra finalizada com ${totalItens} itens.\nTotal: R$ ${document.getElementById("total").textContent}`);
+      // Aqui você pode redirecionar ou integrar com PHP
+    }
+  });
+
+  // Inicializa
+  atualizarCarrinho();
+
+});
+</script>
+
+  </body>
 </html>
