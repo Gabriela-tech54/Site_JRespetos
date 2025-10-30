@@ -95,12 +95,12 @@
   <h6 class="fw-bold">Opções de pagamento</h6>
 
   <!-- Início do formulário -->
-  <form id="formPagamento" action="../php/cadastro_forma_pagamento.php" method="post">
+  <form >
     <div class="d-flex flex-column gap-2 mt-2">
 
       <!-- Cartão -->
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="pagamento" id="pagamentoCartao" value="cartao" required>
+        <input class="form-check-input" type="radio"  id="pagamentoCartao" value="cartao" required>
         <label class="form-check-label" for="pagamentoCartao">
           <i class="bi bi-credit-card"></i> Cartão
         </label>
@@ -108,7 +108,7 @@
 
       <!-- Pix -->
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="pagamento" id="pagamentoPix" value="pix">
+        <input class="form-check-input" type="radio"  id="pagamentoPix" value="pix">
         <label class="form-check-label" for="pagamentoPix">
           <i class="bi bi-upc-scan"></i> Pix
         </label>
@@ -116,7 +116,7 @@
 
       <!-- Dinheiro -->
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="pagamento" id="pagamentoDinheiro" value="dinheiro">
+        <input class="form-check-input" type="radio"  id="pagamentoDinheiro" value="dinheiro">
         <label class="form-check-label" for="pagamentoDinheiro">
           <i class="bi bi-cash-coin"></i> Dinheiro
         </label>
@@ -140,25 +140,25 @@
       <!-- Rua -->
       <div class="col-md-6">
         <label for="rua" class="form-label">Rua</label>
-        <input type="text" class="form-control" id="rua" placeholder="Digite sua rua" required name="rua">
+        <input type="text" class="form-control" id="rua" placeholder="Digite sua rua" required >
       </div>
 
       <!-- Número -->
       <div class="col-md-2">
         <label for="numero" class="form-label">Número</label>
-        <input type="text" class="form-control" id="numero" placeholder="Nº" required name="numero">
+        <input type="text" class="form-control" id="numero" placeholder="Nº" required>
       </div>
 
       <!-- Bairro -->
       <div class="col-md-4">
         <label for="bairroCliente" class="form-label">Bairro</label>
-        <input type="text" class="form-control" id="bairroCliente" placeholder="Digite seu bairro" required name="bairro">
+        <input type="text" class="form-control" id="bairroCliente" placeholder="Digite seu bairro" required >
       </div>
 
       <!-- CEP -->
       <div class="col-md-4">
         <label for="cep" class="form-label">CEP</label>
-        <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" required name="cep">
+        <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" required >
       </div>
 
     </div>
