@@ -93,10 +93,10 @@ try{
      ]);
      /* Verificando se foi cadastrado no banco de dados */
      if($inserir){
-        redirecWith("../paginas/login.html",
+        redirecWith("../paginas_cliente/login.html",
         ["cadastro" => "ok"]) ;
      }else{
-        redirecWith("../paginas/cadastro.html",["erro" 
+        redirecWith("../paginas_cliente/cadastro.html",["erro" 
         =>"Erro ao cadastrar no banco de dados"]);
      }
     /* agora que tudo foi feito no Try, vamos elaborar 
